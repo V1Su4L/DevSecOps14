@@ -74,4 +74,4 @@ def delete_by_id(user_id):
     return {"message": "Done"}
 
 
-app.run(use_reloader=True)  # port 5000 host = localhost
+app.run(host='0.0.0.0', use_reloader=True)  # port 5000 host = localhost

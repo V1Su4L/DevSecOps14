@@ -16,13 +16,7 @@ services:
       POSTGRES_DB: flask_color_app
       POSTGRES_USER: flask_user
       POSTGRES_PASSWORD: flask_password
-    command: /bin/bash -c "psql -h postgres -U flask_user"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U flask_user -d flask_color_app"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 volumes:
   postgres:

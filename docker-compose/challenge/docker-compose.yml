@@ -1,0 +1,22 @@
+version: "3.1"
+services:
+  app:
+    build: ./app
+    ports:
+      - 5001:5000
+    environment:
+      DATABASE_URL: “postgresql://flask_user:flask_password@postgres/flask_color_app”
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:alpine3.19
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: flask_color_app
+      POSTGRES_USER: flask_user
+      POSTGRES_PASSWORD: flask_password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  postgres:

@@ -1,0 +1,56 @@
+version: "3.1"
+services:
+  client:
+    build: ./frontend
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    user: root
+    depends_on:
+      - server
+    # command: "bash command to run before the cmd of the container"
+    restart: no
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --silent --fail http://localhost:3000/health || exit 1",
+        ]
+      interval: 3s
+      retries: 5
+      start_period: 60s
+    deploy:
+      replicas: 3
+  server:
+    build: ./backend
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    user: root
+    depends_on:
+      - mongo
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "2"
+          memory: '256M'
+        reservations:
+          cpus: '0.2'
+          memory: '128M'
+  mongo:
+    image: mongo:4.0-xenial
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    volumes:
+      - todo:/data/db
+    environment:
+      - db_password
+      - MONGODB_INITDB_ROOT_USERNAME=${MONGODB_INITDB_ROOT_USERNAME}
+secrets:
+  db_password:
+    file: secret1.txt
+
+volumes:
+  todo:
+# secrets:
+#   db_password:
+#     file: secret1.txt

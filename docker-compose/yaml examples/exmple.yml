@@ -1,0 +1,33 @@
+# https://onlineyamltools.com/convert-yaml-to-json - Website to convert yml -> JSON.
+make: honda
+model: civic
+year: 2022
+gearbox:
+  - 1
+  - 2
+  - 3
+se:
+  make: honda
+  model: civic rs
+  gearbox:
+    - 1
+    - 2
+    - 3
+    - 4
+  name: carlos
+name: carlosee
+ism: false
+number: 1.1
+h: Null
+2: null 
+r: NULL
+books:
+  - 1996:
+      author: gang of 4
+      name: dp
+  - 2001:
+      author: donald j trump
+      name: how to get your first mil
+
+site: google.com
+m: 1

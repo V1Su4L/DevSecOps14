@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: flask-deployment
+  labels:
+    flask: pc
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      flask: pc
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: flask-pod
+      labels:
+        flask: pc
+    spec:
+      containers:
+        - name: flask-container
+          image: flaskpc:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: 500Mi
+          readinessProbe:
+            httpGet: 
+              path: /healthy
+              port: 5000
+            initialDelaySeconds: 5
+            timeoutSeconds: 15
+          livenessProbe:      
+            httpGet: 
+              path: /test
+              port: 5000
+            initialDelaySeconds: 5
+            timeoutSeconds: 15

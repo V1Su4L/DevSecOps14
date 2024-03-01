@@ -1,0 +1,11 @@
+deployment:
+  applicationname:
+  labelkey:
+  labelvalue:
+  numberofreplicas:
+  imageurl:
+  port:
+service:
+  nodeport:
+  targetport:
+  port:

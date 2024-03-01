@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: helm-homework-deployment
+  labels:
+    app: helm-homework
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helm-homework
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: helm-homework-pod
+      labels:
+        app: helm-homework
+    spec:
+      containers:
+      - name: helm-homework-container
+        image: liorlazar/helm-homework:V1.0.0
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 500Mi   
+        ports:
+        - containerPort: 3000

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ping-pong-deployment
+  labels:
+    app: ping-pong
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: ping-pong-pod
+      labels:
+        app: ping-pong
+    spec:
+      containers:
+      - name: ping-pong-container
+        image: ping-pong:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5000
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 500Mi

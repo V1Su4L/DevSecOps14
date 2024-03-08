@@ -1,0 +1,39 @@
+pipeline{
+    agent any
+    stages{
+        stage("Build"){
+            steps{
+                sh 'pwd'
+                sh 'docker build -t movies-jenkins:v1 .'
+            }
+            post{
+                always{
+                    echo "rm -f Dockerfile"
+                }
+                success{
+                    echo "well done"
+                }
+                failure{
+                    echo "oooooops"
+                }
+            }
+        }
+        stage("Test"){
+            steps{
+                sh 'docker run -d -p 8090:80 movies-jenkins:v1' // run the container on port 8090
+                sh 'sleep 5 && timeout 5 ping localhost -c 4 -p 8090'
+            }
+        }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}

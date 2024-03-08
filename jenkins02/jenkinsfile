@@ -4,7 +4,12 @@ pipeline{
         stage("Build"){
             steps{
                 sh 'pwd'
-                sh 'docker build -t movies-jenkins:v1 .'
+                sh 'ls -la'
+                dir ('jenkns02')
+                {
+                    sh 'ls -la'
+                    sh 'docker build -t movies-jenkins:v1 .'
+                }
             }
             post{
                 always{

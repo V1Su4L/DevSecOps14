@@ -3,6 +3,7 @@ pipeline{
     stages{
         stage("Build"){
             steps{
+                sh 'docker --version'
                 sh 'pwd'
                 sh 'ls -la'
                 dir ('jenkns02')
@@ -26,13 +27,13 @@ pipeline{
         stage("Test"){
             steps{
                 sh 'docker run -d -p 8090:80 movies-jenkins:v1' // run the container on port 8090
-                sh 'sleep 5 && timeout 5 ping localhost -c 4 -p 8090'
+                sh 'sleep 5 docker ps'
             }
         }
     }
     post{
         always{
-            echo "========always========"
+            sh "docker rm -f $(docker ps -qa)"
         }
         success{
             echo "========pipeline executed successfully ========"

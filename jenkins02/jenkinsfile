@@ -1,39 +1,37 @@
 pipeline{
     agent any
     stages{
-        stage("Build"){
+        stage("build"){
             steps{
-                sh 'docker --version'
                 sh 'pwd'
                 sh 'ls -la'
-                dir ('jenkns02')
-                {
+                dir('jenkins3') {
                     sh 'ls -la'
                     sh 'docker build -t movies-jenkins:v1 .'
                 }
             }
             post{
                 always{
-                    echo "rm -f Dockerfile"
+                    sh "rm -f Dockerfile "
                 }
                 success{
                     echo "well done"
                 }
                 failure{
-                    echo "oooooops"
+                    echo "ooooops"
                 }
             }
         }
-        stage("Test"){
+        stage("test"){
             steps{
-                sh 'docker run -d -p 8090:80 movies-jenkins:v1' // run the container on port 8090
-                sh 'sleep 5 docker ps'
+                sh 'docker run -d -p 8090:80 movies-jenkins:v1 ' // run the contaienr on port 8090
+                sh 'docker ps'
+                }
             }
-        }
     }
     post{
         always{
-            sh "docker rm -f $(docker ps -qa)"
+            sh 'echo hello'
         }
         success{
             echo "========pipeline executed successfully ========"

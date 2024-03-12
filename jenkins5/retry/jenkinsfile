@@ -7,9 +7,10 @@ pipeline{
     stages{
         stage("Docker-Verify"){
             steps{
-                retry(3){
-                    sh 'echo ${VERSION}'
-                }
+               withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USERNAME', passwordVariable: 'PASS')]){
+                sh 'echo username : ${USERNAME}'
+                sh 'echo password ${PASS}'
+               }
                sh 'docker --version'
             }
         }
@@ -17,8 +18,8 @@ pipeline{
         stage("internet-Verify"){
             steps{
                 retry(3){
-                    timeout(time: 3, unit: 'SECONDS'){
-                        sh 'ping -c 6 8.8.8.8'
+                    timeout(time: 1, unit: 'SECONDS'){
+                        sh 'ping -c 30 8.8.8.8'
                     }
                 }
             }

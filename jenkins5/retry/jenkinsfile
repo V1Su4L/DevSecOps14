@@ -17,7 +17,7 @@ pipeline{
         stage("internet-Verify"){
             steps{
                 retry(3){
-                    timeout(time: 3, units: 'SECONDS'){
+                    timeout(time: 3, unit: 'SECONDS'){
                         sh 'ping -c 6 8.8.8.8'
                     }
                 }
@@ -34,7 +34,7 @@ pipeline{
                     sh 'pwd'
                     sleep(10)
                     dir('Task6'){
-                        timeout(time: 4 , units: 'SECONDS'){
+                        timeout(time: 4 , unit: 'SECONDS'){
                             sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
                         }
                     }

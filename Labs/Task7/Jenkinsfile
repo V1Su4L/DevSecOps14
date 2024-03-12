@@ -27,7 +27,7 @@ pipeline{
         }
         stage("Docker-Image-Verify"){
             steps{
-                sh 'docker images | grep -i "${IMAGE_NAME}'
+                sh 'docker images | grep -i ${IMAGE_NAME}'
             }
         }
     }

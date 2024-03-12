@@ -1,0 +1,24 @@
+pipeline{
+    agent any
+    environment{
+        IMAGE_NAME='myhttpd'
+        VERSION='v1.0.0'
+    }
+    stages{
+        stage("Docker-Verify"){
+            steps{
+                sh 'docker --version'
+            }
+        }
+        stage("Git-Verify"){
+            steps{
+                sh 'git --version'
+            }
+        }
+        stage("Git-Verify"){
+            steps{
+                sh 'docker build -t ${IMAGE_NAME}:${VERSION} .'
+            }
+        }
+    }
+}

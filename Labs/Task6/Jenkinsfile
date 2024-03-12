@@ -18,7 +18,7 @@ pipeline{
         stage("Docker-Build"){
             steps{
                 dir('Labs'){
-                    sh 'echo pwd'
+                    sh 'pwd'
                     dir('Task6'){
                         sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
                     }

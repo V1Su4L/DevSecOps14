@@ -1,37 +1,51 @@
 pipeline{
     agent any
-    environment{
+    environment {
         IMAGE_NAME='myhttpd'
-        VERSION="V${BUILD_ID}.${BUILD_NUMBER}"
+        VERSION = "v${BUILD_ID}.${BUILD_NUMBER}" //v12.13
     }
     stages{
         stage("Docker-Verify"){
             steps{
                 retry(3){
-                    sh 'ehco ${VERSION}'
+                    sh 'echo ${VERSION}'
                 }
-                sh 'docker --version'
+               sh 'docker --version'
             }
         }
-        stage("Git-Verify"){
+        
+        stage("internet-Verify"){
             steps{
-                sh 'git --version'
-            }
-        }
-        stage("Docker-Build"){
-            steps{
-                dir('Labs'){
-                    sh ' pwd'
-                    dir('Task6'){
-                        sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
+                retry(3){
+                    timeout(time: 3, units: 'SECONDS'){
+                        sh 'ping -c 6 8.8.8.8'
                     }
                 }
             }
         }
-        stage("Docker-Image-Verify"){
+        stage("git-Verify"){
             steps{
-                sh 'docker images | grep -i ${IMAGE_NAME}'
+               sh 'git --version'
             }
         }
+        stage("docker-build"){
+            steps{
+                dir('Labs'){
+                    sh 'pwd'
+                    sleep(10)
+                    dir('Task6'){
+                        timeout(time: 4 , units: 'SECONDS'){
+                            sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
+                        }
+                    }
+                }
+            }
+        }
+        stage("docker-image-verify"){
+            steps{
+                 sh 'docker images | grep -i ${IMAGE_NAME}' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile . 
+                }
+        }
     }
+  
 }

@@ -1,0 +1,47 @@
+pipeline{
+    agent any
+    environment{
+        REPO_URL='https://github.com/devopsPRO27/Docker-exercise-3'
+        IMAGE_NAME='resume'
+        TAG='V1.${BUILD_NUMBER}'
+        CONTAINER_NAME=
+        REGISTRY='DockerHub'
+        ACCOUNT_NAME='liorlazar'
+        NEW_IMAGE_NAME='reponame'
+    }
+    stages{
+        stage("Clone"){
+            steps{
+                sh 'git clone ${REPO_URL}'
+                sh 'pwd'
+                sh 'find .'
+            }
+        }
+         stage("Build"){
+            steps{
+                echo "========executing A========"
+            }
+        }
+        stage("Test"){
+            steps{
+                echo "========executing A========"
+            }
+        }
+        stage("Push"){
+            steps{
+                echo "========executing A========"
+            }
+        }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}

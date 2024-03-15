@@ -39,13 +39,13 @@ pipeline{
                 sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENIALS_USR} --password-stdin'
             }
         }
-        stage('Push Image'){
-            steps{
-                sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}'
-                sh 'docker images'
-                sh 'docker push ${ACCOUNT_NAME}:${TAG}'
-            }
-        }
+        // stage('Push Image'){
+        //     steps{
+        //         sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}'
+        //         sh 'docker images'
+        //         sh 'docker push ${ACCOUNT_NAME}:${TAG}'
+        //     }
+        // }
     }
     post{
         always{

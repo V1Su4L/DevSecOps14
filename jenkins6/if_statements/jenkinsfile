@@ -27,7 +27,7 @@ pipeline{
             }
         }
         stage("Test"){
-            when {branch 'Jenkins'}
+            when {branch 'main'}
             steps{
                 echo "========Jenkins========"
             }

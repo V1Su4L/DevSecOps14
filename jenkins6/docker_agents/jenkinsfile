@@ -32,11 +32,11 @@ pipeline{
         
         }
         stage("test"){
-            agent {
-                docker{
-                    image'ubuntu:latest'
-                }
-            }
+            // agent {
+            //     docker{
+            //         image'ubuntu:latest'
+            //     }
+            // }
             steps{
                 sh 'pwd'
                 sh 'whoami'

@@ -7,7 +7,7 @@ pipeline{
         TAG= "V1.${BUILD_NUMBER}"
         CONTAINER_NAME= 'sorry'
         REGISTRY= 'hub.docker.com'
-        ACCOUNT_NAME= 'hothaifaz11/resumee'
+        ACCOUNT_NAME= 'liorlazar/resume'
         DOCKERHUB_CREDENIALS = credentials('docker')
         // DOCKERHUB_CREDENIALS_USR
         // DOCKERHUB_CREDENIALS_PSW

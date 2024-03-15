@@ -4,7 +4,7 @@ pipeline{
         REPO_URL='https://github.com/devopsPRO27/Docker-exercise-3'
         IMAGE_NAME='resume'
         TAG='V1.${BUILD_NUMBER}'
-        CONTAINER_NAME=
+        CONTAINER_NAME= 'sorrygi'
         REGISTRY='DockerHub'
         ACCOUNT_NAME='liorlazar'
         NEW_IMAGE_NAME='reponame'

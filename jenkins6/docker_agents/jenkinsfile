@@ -41,7 +41,7 @@ pipeline{
         }
         stage('Push Image'){
             steps{
-                sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}'
+                sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}'
                 sh 'docker images'
                 sh 'docker push ${ACCOUNT_NAME}:${TAG}'
             }

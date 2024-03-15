@@ -1,57 +1,70 @@
 pipeline{
     agent any
-    environment{
+    environment {
         REPO_URL= 'https://github.com/devopsPRO27/Docker-exercise-3'
         IMAGE_NAME= 'resume'
-        DIR_NAME= 'Docker-exercise-3'
+        DIR_NAME='Docker-exercise-3'
         TAG= "V1.${BUILD_NUMBER}"
         CONTAINER_NAME= 'sorry'
         REGISTRY= 'hub.docker.com'
         ACCOUNT_NAME= 'liorlazar/resume'
-        NEW_IMAGE_NAME= 'reponame'
-        DOCKERHUB_CREDENTIALS= credentials('Docker')
+        DOCKERHUB_CREDENIALS = credentials('docker')
+        // DOCKERHUB_CREDENIALS_USR
+        // DOCKERHUB_CREDENIALS_PSW
+
     }
     stages{
-        stage("Clone"){
+        stage("clone"){
             steps{
                 sh 'git clone ${REPO_URL}'
                 sh 'pwd'
                 sh 'find .'
             }
+        
         }
-         stage("Build"){
+        stage("build"){
             steps{
                 dir('Docker-exercise-3/ResumeMaker/'){
                     sh 'docker build -t ${IMAGE_NAME}:${TAG} --file ../../jenkins6/docker_agents/Dockerfile .'
                     sh 'docker images'
                 }
             }
+        
         }
-        stage("Test"){
-            when {branch 'Jenkins'}
-            steps{
-                echo "========Jenkins========"
+        stage("test"){
+            agent {
+                docker{
+                    image'ubuntu:latest'
+                }
             }
+            steps{
+                sh 'pwd'
+                sh 'whoami'
+                sh 'uname -u'
+            }
+        
         }
         stage("Login to DockerHub"){
             steps{
                 sh 'echo ${DOCKERHUB_CREDENIALS_USR}'
-                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUBDOCKERHUB_CREDENTIALS_USR} --password-stdin'
+                sh "echo ${DOCKERHUB_CREDENIALS_PSW} | docker login -u ${DOCKERHUB_CREDENIALS_USR} --password-stdin "
             }
+        
         }
-        stage('Push Image'){
+        stage("push image"){
             steps{
-                sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}'
-                sh 'docker images'
-                sh 'docker push ${ACCOUNT_NAME}:${TAG}'
+                sh "docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}"
+                sh "docker images"
+                sh "docker push ${ACCOUNT_NAME}:${TAG}" 
             }
+        
         }
     }
     post{
         always{
             sh 'rm -fr ${DIR_NAME}'
-            sh 'docker rmi -f ${IMAGE_NAME}:${TAG}'
-            sh 'docker logout'
+            sh 'docker rmi -f $(docker images -qa)'
+            sh 'docker logout' 
         }
         success{
             echo "========pipeline executed successfully ========"

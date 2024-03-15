@@ -19,7 +19,9 @@ pipeline{
         }
          stage("Build"){
             steps{
-                echo "========executing A========"
+                dir('Docker-exercise-3/ResumeMaker'){
+                    sh 'pwd'
+                }
             }
         }
         stage("Test"){

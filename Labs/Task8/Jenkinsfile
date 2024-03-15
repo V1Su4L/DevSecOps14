@@ -1,35 +1,61 @@
 pipeline{
     agent any
-    environment{
+    environment {
         IMAGE_NAME='myhttpd'
-        VERSION="V${BUILD_ID}.${BUILD_NUMBER}"
+        VERSION = "v${BUILD_ID}.${BUILD_NUMBER}" //v12.13
+        DOCKER_USERNAME= 'admin' //x
+        DOCKER_PASSWORD= 'mama maglione pizza' //x
+        
     }
     stages{
-        stage("Docker-Verify"){
-            steps{
-                echo '${VERSION}'
+        stage("Verify's") {
+        parallel{
+            stage("Docker-Verify"){
+                steps{
+                withCredentials([usernamePassword(credentialsId: 'DockerCred',usernameVariable:'USERNAME',passwordVariable:'PASS')]){
+                        sh 'echo username : ${USERNAME}'
+                        sh 'echo password : ${PASS}'
+                        sh 'docker login --username ${USERNAME} --password ${PASS} https://hub.docker.com'
+
+                }
                 sh 'docker --version'
+                }
             }
-        }
-        stage("Git-Verify"){
-            steps{
+            stage("internet-Verify"){
+                steps{
+                    retry(3){
+                        timeout(time: 1, unit: 'SECONDS'){
+                            sh 'ping -c 1 8.8.8.8&'
+                        }
+                    }
+                }
+            }
+            stage("git-Verify"){
+                steps{
                 sh 'git --version'
+                }
             }
         }
-        stage("Docker-Build"){
+    }
+        
+        stage("docker-build"){
             steps{
                 dir('Labs'){
-                    sh ' pwd'
+                    sh 'pwd'
+                    sleep(10)
                     dir('Task6'){
-                        sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
+                        timeout(time: 4 , unit: 'SECONDS'){
+                            sh 'docker build -t ${IMAGE_NAME}:${VERSION} .' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile .
+                        }
                     }
                 }
             }
         }
-        stage("Docker-Image-Verify"){
+        stage("docker-image-verify"){
             steps{
-                sh 'docker images | grep -i ${IMAGE_NAME}'
-            }
+                 sh 'docker images | grep -i ${IMAGE_NAME}' // docker build -t jenbababab:latest --file ./Labs/Task6/Dockerfile . 
+                }
         }
     }
+  
 }

@@ -7,7 +7,7 @@ pipeline{
         TAG= "V1.${BUILD_NUMBER}"
         CONTAINER_NAME= 'sorry'
         REGISTRY= 'hub.docker.com'
-        ACCOUNT_NAME= 'liorlazar'
+        ACCOUNT_NAME= 'liorlazar/resume'
         NEW_IMAGE_NAME= 'reponame'
         DOCKERHUB_CREDENTIALS= credentials('Docker')
     }
@@ -33,17 +33,23 @@ pipeline{
                 echo "========Jenkins========"
             }
         }
-        stage("Login to Dockerhub"){
+        stage("Login to DockerHub"){
             steps{
                 sh 'echo ${DOCKERHUB_CREDENIALS_USR}'
-                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u liorlazar --password-stdin'
+                sh 'echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENIALS_USR} --password-stdin'
             }
+        }
+        stage('Push Image'){
+            sh 'docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}'
+            sh 'docker images'
+            sh 'docker push ${ACCOUNT_NAME}:${TAG}'
         }
     }
     post{
         always{
             sh 'rm -fr ${DIR_NAME}'
             sh 'docker rmi -f ${IMAGE_NAME}:${TAG}'
+            sh 'docker logout'
         }
         success{
             echo "========pipeline executed successfully ========"

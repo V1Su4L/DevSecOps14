@@ -1,6 +1,6 @@
 pipeline{
     agent {
-                docker{
+                dockerContainer{
                     image 'ubuntu:latest'
                 }
             }
@@ -20,7 +20,7 @@ pipeline{
     stages{
         stage("clone"){
             agent {
-                docker{
+                dockerContainer{
                     image'node:alpine'
                 }
             }

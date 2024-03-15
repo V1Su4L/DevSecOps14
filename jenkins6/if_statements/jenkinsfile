@@ -27,7 +27,7 @@ pipeline{
             }
         }
         stage("Test"){
-            when {not {branch 'main'}}
+            when {not {branch 'Jenkins'}}
             steps{
                 echo "========executing A========"
             }

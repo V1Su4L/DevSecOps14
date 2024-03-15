@@ -20,8 +20,9 @@ pipeline{
         }
          stage("Build"){
             steps{
-                dir('Docker-exercise-3/ResumeMaker'){
-                    sh 'pwd'
+                dir('Docker-exercise-3/ResumeMaker/'){
+                    sh 'docker build -t ${IMAGE_NAME}:${TAG} --file ../../Dockerfile .'
+                    sh 'docker images'
                 }
             }
         }
@@ -39,6 +40,7 @@ pipeline{
     post{
         always{
             sh 'rm -fr ${DIR_NAME}'
+            sh 'docker rmi -f ${IMAGE_NAME}:${TAG}'
         }
         success{
             echo "========pipeline executed successfully ========"

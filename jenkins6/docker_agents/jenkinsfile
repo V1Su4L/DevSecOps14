@@ -11,14 +11,14 @@ pipeline{
         TAG= "V1.${BUILD_NUMBER}"
         CONTAINER_NAME= 'sorry'
         REGISTRY= 'hub.docker.com'
-        ACCOUNT_NAME= 'hothaifaz11/resumee'
-        DOCKERHUB_CREDENIALS = credentials('docker')
+        ACCOUNT_NAME= 'liorlazar/resume'
+        DOCKERHUB_CREDENIALS = credentials('Docker')
         // DOCKERHUB_CREDENIALS_USR
         // DOCKERHUB_CREDENIALS_PSW
 
     }
     stages{
-        stage("clone"){
+        stage("Clone"){
             agent {
                 docker{
                     image'node:alpine'
@@ -31,7 +31,7 @@ pipeline{
             }
         
         }
-        stage("build"){
+        stage("Build"){
             steps{
                 dir('Docker-exercise-3/ResumeMaker/'){
                     sh 'docker build -t ${IMAGE_NAME}:${TAG} --file ../../jenkins6/docker_agents/Dockerfile .'
@@ -40,7 +40,7 @@ pipeline{
             }
         
         }
-        stage("test"){
+        stage("Test"){
             
             steps{
                 sh 'git clone '
@@ -56,7 +56,7 @@ pipeline{
             }
         
         }
-        stage("push image"){
+        stage("Push Image"){
             steps{
                 sh "docker tag ${IMAGE_NAME}:${TAG} ${ACCOUNT_NAME}:${TAG}"
                 sh "docker images"
